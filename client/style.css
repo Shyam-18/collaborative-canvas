@@ -1,0 +1,6 @@
+/* client/style.css (optional but recommended) */
+html, body { height: 100%; }
+body { margin: 0; font-family: system-ui, Arial; }
+header { display: flex; gap: 8px; align-items: center; padding: 10px 12px; border-bottom: 1px solid #eee; position: sticky; top: 0; background: #fff; z-index: 10; }
+#board { display: block; width: 100vw; height: calc(100vh - 54px); touch-action: none; }
+#status { margin-left: auto; opacity: .7; font-size: 12px; }

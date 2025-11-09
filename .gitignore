@@ -1,0 +1,14 @@
+# Node
+node_modules
+npm-debug.log*
+
+# Build output
+dist
+data
+
+# OS/editor junk
+.DS_Store
+Thumbs.db
+.idea
+.vscode/*
+!.vscode/settings.json

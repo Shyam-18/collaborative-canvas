@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    // Output
+    "rootDir": "./",
+    "outDir": "./dist",
+
+    // Module/Target (Node-friendly)
+    "target": "ES2020",
+    "module": "commonjs",
+    "moduleResolution": "node",
+
+    // Interop so `import express from 'express'` works
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    // IMPORTANT: turn off the strict ES import enforcement from TS 5
+    "verbatimModuleSyntax": false,
+
+    // Types + libs
+    "types": ["node"],
+
+    // Strictness (keep it strong but practical)
+    "strict": true,
+    "skipLibCheck": true,
+
+    // Helpful, but not blocking right now
+    // "noImplicitReturns": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true
+
+    // Avoid extra friction for now
+    // (we'll re-enable later if you want)
+    "isolatedModules": false
+  },
+  "include": ["server/**/*.ts", "client/**/*.ts", "client/main.js"]
+}

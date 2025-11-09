@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Collaborative Canvas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #111;
+      --panel: #1b1b1b;
+      --muted: #999;
+      --accent: #4caf50;
+      --danger: #f44336;
+      --text: #eaeaea;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font: 14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      grid-template-rows: 48px 1fr 28px;
+      grid-template-areas:
+        "toolbar toolbar"
+        "sidebar canvas"
+        "status  status";
+      height: 100vh;
+    }
+    #toolbar button:hover {
+      background: #333;
+      transform: scale(1.03);
+      transition: 0.15s ease;
+    }
+    #toolbar {
+      grid-area: toolbar;
+      display: flex; align-items: center; gap: .5rem;
+      padding: 8px 12px; background: var(--panel); border-bottom: 1px solid #222;
+      position: sticky; top: 0; z-index: 10;
+    }
+    #toolbar button, #toolbar input[type="color"], #toolbar input[type="range"] {
+      background: #2a2a2a; color: var(--text); border: 1px solid #333; border-radius: 8px;
+      padding: 6px 10px;
+    }
+    #toolbar .group { display: inline-flex; gap: 6px; align-items: center; }
+    #toolbar .spacer { flex: 1; }
+    #sidebar {
+      grid-area: sidebar; border-right: 1px solid #222; background: #141414; overflow: auto;
+    }
+    #users {
+      list-style: none; padding: 10px; margin: 0; display: grid; gap: 8px;
+    }
+    .user {
+      display: flex; align-items: center; gap: 10px; padding: 6px 8px; border-radius: 8px; background: #1b1b1b;
+    }
+    .dot {
+      width: 12px; height: 12px; border-radius: 6px; flex: 0 0 12px;
+      outline: 1px solid #00000033;
+    }
+    .uid { color: var(--muted); font-size: 12px; }
+    .me  { color: var(--accent); font-weight: 600; font-size: 12px; margin-left: auto; }
+    #canvasWrap { grid-area: canvas; background: #101010; }
+    #board { width: 100%; height: 100%; display: block; touch-action: none; cursor: crosshair; }
+    #statusbar {
+      grid-area: status; background: var(--panel); color: var(--muted);
+      display: flex; align-items: center; gap: 16px; padding: 4px 10px; border-top: 1px solid #222;
+      font-size: 12px;
+    }
+    .badge { padding: 2px 8px; border-radius: 999px; background: #2a2a2a; border: 1px solid #333; }
+    .badge.ok { color: #9ad79a; }
+    .badge.warn { color: #ffd27d; }
+    .badge.err { color: #ff8a80; }
+    @media (max-width: 920px) {
+      .layout {
+        grid-template-columns: 1fr;
+        grid-template-rows: 48px 120px 1fr 28px;
+        grid-template-areas:
+          "toolbar"
+          "sidebar"
+          "canvas"
+          "status";
+      }
+      #sidebar { border-right: none; border-bottom: 1px solid #222; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <div id="toolbar">
+      <div class="group">
+        <button id="tool-brush" title="Brush">🖌️ Brush</button>
+        <button id="tool-eraser" title="Eraser">🧹 Eraser</button>
+      </div>
+      <div class="group">
+        <input type="color" id="color" value="#ff4757" title="Color" />
+        <input type="range" id="width" min="1" max="50" value="6" title="Width" />
+      </div>
+      <div class="group">
+        <button id="undo" title="Undo">↶ Undo</button>
+        <button id="redo" title="Redo">↷ Redo</button>
+      </div>
+      <div class="spacer"></div>
+      <div class="group">
+        <span id="roomLabel" class="badge"></span>
+        <span id="connLabel" class="badge"></span>
+      </div>
+    </div>
+
+    <aside id="sidebar">
+      <ul id="users"></ul>
+    </aside>
+
+    <div id="canvasWrap">
+      <canvas id="board"></canvas>
+    </div>
+
+    <div id="statusbar">
+      <span id="status">ready</span>
+      <span id="fps" class="badge">FPS: —</span>
+      <span id="lat" class="badge">Latency: — ms</span>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="module" src="/dist/client/main.js"></script>
+</body>
+</html>
