@@ -35,11 +35,11 @@ npm run build:client
 npm run dev
 # open http://localhost:3000
 ```
-# Production
+## Production
 npm run build:all     # builds server (CJS) + client (ESM)
 npm start             # serves dist/server.js and dist/client/*
 
-# Project Structure
+## Project Structure
 collaborative-canvas/
 ├── client/
 │   ├── index.html
@@ -56,7 +56,7 @@ collaborative-canvas/
 ├── tsconfig.json
 └── client/tsconfig.client.json
 
-# Features
+## Features
 
 Brush & Eraser, color picker, width control
 
@@ -74,7 +74,7 @@ HUD: FPS + round-trip latency
 
 Mobile/Pen friendly: Pointer Events, basic pressure support
 
-# Design Notes (short)
+## Design Notes (short)
 
 Canvas engine uses two layers: committed bitmap + live overlay (for in-progress).
 
@@ -86,7 +86,7 @@ Checkpointing saves periodic JSON snapshots (portable, no native deps).
 
 Network batches points with requestAnimationFrame to reduce chatter.
 
-# Deployment (Render)
+## Deployment (Render)
 
 Build Command: npm install && npm run build:all
 
@@ -98,7 +98,7 @@ Healthcheck: /healthz
 
 (Optional) Disk for persistence: mount at /opt/render/project/src/data
 
-# Known Limitations
+## Known Limitations
 
 Free-tier Render can sleep; expect a short wake-up.
 
