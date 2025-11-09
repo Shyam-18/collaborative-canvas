@@ -34,3 +34,72 @@ npm install
 npm run build:client
 npm run dev
 # open http://localhost:3000
+```
+# Production
+npm run build:all     # builds server (CJS) + client (ESM)
+npm start             # serves dist/server.js and dist/client/*
+
+# Project Structure
+collaborative-canvas/
+├── client/
+│   ├── index.html
+│   ├── main.ts          # sockets, UI, cursors, HUD, replay
+│   └── canvas.ts        # canvas engine (live+committed layers, eraser)
+├── server/
+│   ├── server.ts        # express + socket.io + routes
+│   ├── rooms.ts         # room/user manager, colors
+│   ├── drawing-state.ts # op log, temp strokes, undo/redo, checkpoints hook
+│   └── persistence.ts   # save/load per-room ops
+├── data/                # runtime data + checkpoints (served at /data)
+├── dist/                # build outputs
+├── package.json
+├── tsconfig.json
+└── client/tsconfig.client.json
+
+# Features
+
+Brush & Eraser, color picker, width control
+
+Live cursors (per-user color)
+
+Real-time streaming while drawing (not post-stroke)
+
+Global Undo/Redo via operation log (active toggle with ordered seq)
+
+Rooms via query param (?room=) for isolation
+
+Persistence: per-room JSON + JSON checkpoints (fast startup)
+
+HUD: FPS + round-trip latency
+
+Mobile/Pen friendly: Pointer Events, basic pressure support
+
+# Design Notes (short)
+
+Canvas engine uses two layers: committed bitmap + live overlay (for in-progress).
+
+Eraser uses destination-out compositing (first-class op).
+
+Undo/Redo toggles op active and replays deterministic timeline.
+
+Checkpointing saves periodic JSON snapshots (portable, no native deps).
+
+Network batches points with requestAnimationFrame to reduce chatter.
+
+# Deployment (Render)
+
+Build Command: npm install && npm run build:all
+
+Start Command: npm start
+
+Node version (package.json → engines): 20.x
+
+Healthcheck: /healthz
+
+(Optional) Disk for persistence: mount at /opt/render/project/src/data
+
+# Known Limitations
+
+Free-tier Render can sleep; expect a short wake-up.
+
+Persistence across redeploys needs a Disk; otherwise state resets on rebuild.
